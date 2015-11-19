@@ -37,19 +37,26 @@ public class Table extends Operator{
 		tuple = null;
 		String tupleLine;
 		try{
+			//check if getAttribute before
 			if(getAttribute == false){
+				//read the attribute name and type line and set getAttribute
 				attributeLine = br.readLine();
 				dataTypeLine = br.readLine();
 				getAttribute = true;
 			}
+			//read the value line
 			tupleLine = br.readLine();
+			//check if the value line is null
 			if (tupleLine == null){
 				return null;
 			}
+			//create new tuple for return with using the first constructor the attribute name, type and value
 			tuple = new Tuple(attributeLine, dataTypeLine, tupleLine);
+			//set the tuple's attributeArrayList
 			tuple.setAttributeName();
 			tuple.setAttributeType();
 			tuple.setAttributeValue();
+			//return the new created tuple
 			return tuple;
 		} catch (IOException e) {
 				// TODO Auto-generated catch block

@@ -27,10 +27,15 @@ public class Selection extends Operator{
 	public Tuple next(){
 		Tuple tuple = child.next();
 		Boolean returned = false;
+		//check if the child's table is equal to whereTablePredicate
 		if(child.from.equals(whereTablePredicate)){
+			//loop while child return tuple and haven't returned
 			while(tuple != null && !returned){
+				//loop for the attribute of child tuple's attribute
 				for (Attribute attribute: tuple.getAttributeList()){
+					//check if the attribute name and value equal to the whereAttributePredicate and whereValuePredicate
 					if(attribute.getAttributeName().equals(whereAttributePredicate) && attribute.getAttributeValue().equals(whereValuePredicate)){
+						//set it is returned and return the tuple
 						returned = true;
 						return tuple;
 					}
@@ -38,6 +43,7 @@ public class Selection extends Operator{
 				tuple = child.next();
 			}
 		}else if(tuple != null){
+			//if the child's table is not equal to whereTablePredicate, just return the tuple
 			return new Tuple(tuple.getAttributeList());
 		}
 		return null;

@@ -24,17 +24,20 @@ public class Sort extends Operator{
      */
 	@Override
 	public Tuple next(){
+		//check if sorted tuple to the result array
 		if(!returned){
 			Tuple tuple = child.next();
 			ArrayList<Tuple> temp = new ArrayList<Tuple>();
+			//add tuples to temp array
 			while(tuple != null){
 				temp.add(tuple);
 				tuple = child.next();
 			}
+			//check if no tuple in array
 			if(temp.isEmpty()){
-				System.out.print("isEmpty");
 				return null;
 			}else{
+				//use i to find the index of attribute which to be sorted
 				tuple = temp.get(0);
 				int i = 0;
 				for(i = 0; i < tuple.getAttributeList().size(); i++){
@@ -42,13 +45,17 @@ public class Sort extends Operator{
 						break;
 					}
 				}
+				//loop till sort all tuples from temp to result array
 				while(!temp.isEmpty()){
+					//use countMin as counter to count the minimum tuple
 					int countMin = 0;
+					//loop to find the minimum in temp
 					for(int j = 0; j < temp.size(); j++){
 						if(temp.get(j).getAttributeValue(i).toString().compareTo(temp.get(countMin).getAttributeValue(i).toString()) < 0){
 							countMin = j;
 						}
 					}
+					//put minimum tuple to result array and remove from temp array
 					tuplesResult.add(temp.get(countMin));
 					temp.remove(countMin);
 				}
@@ -57,7 +64,9 @@ public class Sort extends Operator{
 		if(tuplesResult.isEmpty()){
 			return null;
 		}else{
+			//set the boolean is returned
 			returned = true;
+			//remove the top of the array to returnTuple and return it
 			Tuple returnTuple = tuplesResult.remove(0);
 			return returnTuple;
 		}

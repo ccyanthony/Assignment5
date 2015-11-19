@@ -29,32 +29,44 @@ public class Join extends Operator{
 		Tuple tuple = null;
 		Tuple leftTuple = leftChild.next();
 		Boolean joint = false;
+		//put all leftChild tuple to tuples1 array
 		while(leftTuple != null){
 			tuples1.add(leftTuple);
 			leftTuple = leftChild.next();
 		}
+		//loop while rightChild return tuple and haven't joint
 		Tuple rightTuple = rightChild.next();
 		while(rightTuple != null && !joint){
 			joint = false;
 			newAttributeList = new ArrayList<Attribute>();
+			//loop for the size of rightchild's tuple's attribute size
 			for(int i = 0; i < rightTuple.getAttributeList().size(); i++){
+				//check if the i's attributeName is the common key - "id"
 				if(rightTuple.getAttributeList().get(i).getAttributeName().equals("id")){
+					//loop for the tuples from the leftChild
 					for(Tuple temp: tuples1){
+						//loop for the leftChild's tuple's attribute size
 						for(int j = 0; j < temp.getAttributeList().size(); j++){
+							//check if the attribute name and value of leftchild is equal to rightchild's 
 							if(temp.getAttributeName(j).equals(rightTuple.getAttributeList().get(i).getAttributeName()) && temp.getAttributeValue(j).equals(rightTuple.getAttributeList().get(i).getAttributeValue())){
+								//add them all to the array list
 								newAttributeList.addAll(temp.getAttributeList());
 								joint = true;
 							}
 						}
 					}
 				}else{
+					//add the non common attribute to the array list
 					newAttributeList.add(rightTuple.getAttributeList().get(i));
 				}
 			}
+			//check if joint
 			if(joint){
+				//create a new tuple with joint arrtibute list and return
 				tuple = new Tuple(newAttributeList);
 				return tuple;
 			}else{
+				//if not joint, go to the next tuple of rightChild
 				rightTuple = rightChild.next();
 			}
 		}

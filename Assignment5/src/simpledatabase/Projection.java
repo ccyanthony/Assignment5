@@ -23,16 +23,21 @@ public class Projection extends Operator{
 	@Override
 	public Tuple next(){
 		Tuple tuple = child.next();
+		//check if child return tuple
 		if (tuple == null){
 			return null;
 		}else{
 			newAttributeList = new ArrayList<Attribute>();
 			Tuple newTuple;
+			//loop for the attributes of child tuple
 			for(Attribute attribute: tuple.getAttributeList()){
+				//check if the attribute name is equal to the attributePredicate
 				if(attribute.getAttributeName().equals(attributePredicate)){
+					//add the attribute to the new attribute array list
 					newAttributeList.add(attribute);
 				}
 			}
+			//create a new tuple with new attribute array list and return
 			newTuple = new Tuple(newAttributeList);
 			return newTuple;
 		}
